@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import axios from "axios"
 
 const Login = () => {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -13,12 +13,13 @@ const Login = () => {
         data: {email: email, password: password}
       };
       axios.request(options).then(function (response) {
-        console.log(response.data);
+        sessionStorage.setItem("access_token", response.data['access'])
+        
       }).catch(function (error) {
         console.error(error);
       });
-        
-    
+      setEmail("")
+      setPassword("")    
   }
   return (
     <form className="w-1/4 shadow-lg px-2 py-8 mx-auto my-60" onSubmit={handleSubmit} >
@@ -27,17 +28,21 @@ const Login = () => {
       </h2>
       <input
         type="text"
+        value={email}
         className="h-8 border-b-2 m-4 text-lg focus:outline-none"
         placeholder="Email"
         onChange={e => {
           setEmail(e.target.value)
         }}
+        required
       />
       <input
         type="password"
+        value={password}
         className="h-8 border-b-2 m-4 text-lg focus:outline-none"
         placeholder="Password"
         onChange={(e)=>setPassword(e.target.value)}
+        required
       />
       <button 
         className="block w-1/4 px-1 py-2 m-2 bg-lime-600 text-white rounded text-xl active:shadow-md">
