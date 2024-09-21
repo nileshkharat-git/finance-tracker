@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import axios from "axios"
 
-const Login = () => {
+const Login = ({setToken}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -12,10 +13,9 @@ const Login = () => {
         url: 'http://127.0.0.1:8000/api/token/',
         data: {email: email, password: password}
       };
-      axios.request(options).then(function (response) {
-        sessionStorage.setItem("access_token", response.data['access'])
-        
-      }).catch(function (error) {
+      axios.request(options).then((response) => {
+        setToken(response.data['access'])
+      }).catch((error) => {
         console.error(error);
       });
       setEmail("")
@@ -23,7 +23,7 @@ const Login = () => {
   }
   return (
     <form className="w-1/4 shadow-lg px-2 py-8 mx-auto my-60" onSubmit={handleSubmit} >
-      <h2 className="text-4xl relative bottom-8 ml-4 bg-[#F5004F] w-32 pl-2 pb-1 text-white font-medium shadow-lg">
+      <h2 className="text-4xl relative bottom-8 ml-4 bg-[#24344c] w-32 pl-2 pb-1 text-white font-medium shadow-lg">
         Login
       </h2>
       <input
@@ -45,7 +45,7 @@ const Login = () => {
         required
       />
       <button 
-        className="block w-1/4 px-1 py-2 m-2 bg-lime-600 text-white rounded text-xl active:shadow-md">
+        className="block w-1/4 px-1 py-2 m-2 bg-green-600 text-white rounded text-xl active:shadow-md">
         Submit
       </button>
     </form>
