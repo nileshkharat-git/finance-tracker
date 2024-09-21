@@ -1,9 +1,6 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import Token
 from .models import CustomUser
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,10 +33,3 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid email or password.")
         return user
 
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        print(token)
-        return token
