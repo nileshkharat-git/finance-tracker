@@ -18,13 +18,13 @@ class Transaction(models.Model):
     ]
 
     EXPENSE_CATEGORIES = [
+        ('debt', 'Debt Payments'),
         ('housing', 'Housing'),
         ('utilities', 'Utilities'),
         ('groceries', 'Groceries'),
         ('transportation', 'Transportation'),
         ('healthcare', 'Healthcare'),
         ('insurance', 'Insurance'),
-        ('debt', 'Debt Payments'),
         ('entertainment', 'Entertainment'),
         ('dining', 'Dining Out'),
         ('clothing', 'Clothing'),
@@ -36,6 +36,7 @@ class Transaction(models.Model):
         ('subscriptions', 'Subscriptions'),
         ('miscellaneous', 'Miscellaneous'),
     ]
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
