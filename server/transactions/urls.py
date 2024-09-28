@@ -1,11 +1,10 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import TransactionViewSet, get_categories
+from django.urls import path
+from .views import IncomeView, get_categories,TrasactionsView
 
 
-router = DefaultRouter()
-router.register(r'', TransactionViewSet)
 urlpatterns = [
-    path('', include(router.urls)),
-    path('categories', get_categories),
+    path('', TrasactionsView.as_view()),
+    path('income/', IncomeView.as_view()),
+    path('categories/', get_categories),
+
 ]
