@@ -9,16 +9,20 @@ import {
   Textarea,
 } from "flowbite-react"
 
+// components
+import AlertBox from "./AlertBox"
 // hooks
 import useToken from "../hooks/useToken"
 
 const Income = () => {
   const { token } = useToken()
   const [categories, setCategories] = useState([])
+  const [message, setMessage] = useState({})
+
   useEffect(() => {
     const options = {
       method: "GET",
-      url: "http://127.0.0.1:8000/transactions/categories",
+      url: "http://127.0.0.1:8000/transactions/income/categories",
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -51,7 +55,7 @@ const Income = () => {
     axios
       .request(options)
       .then(response => {
-        console.log(response.data)
+        setMessage(response.data)
       })
       .catch(error => {
         console.error(error)
@@ -59,6 +63,7 @@ const Income = () => {
   }
   return (
     <div className="">
+      <AlertBox message={message} />
       <form
         method="post"
         className="w-1/2 mx-auto my-8 shadow-lg p-4"
@@ -101,6 +106,7 @@ const Income = () => {
           </Button>
         </div>
       </form>
+      
     </div>
   )
 }
