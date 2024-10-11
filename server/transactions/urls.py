@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import IncomeView, get_categories,TrasactionsView
+from .views import *
 
 
 urlpatterns = [
     path('', TrasactionsView.as_view()),
     path('income/', IncomeView.as_view()),
-    path('categories/', get_categories),
+    path('expense/', ExpenseView.as_view()),
+    path('income/categories/', get_income_categories),
+    path('expense/categories/', get_expense_categories),
 
 ]
