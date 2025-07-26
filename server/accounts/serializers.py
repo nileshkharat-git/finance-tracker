@@ -1,35 +1,14 @@
 from rest_framework import serializers
-from .models import CustomUser
-from django.contrib.auth import authenticate
+from accounts.models import CoreUser, Account
 
-class CustomUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ('email', 'first_name', 'last_name')
-
-class CustomUserCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = CustomUser
-        fields = ('email', 'password', 'first_name', 'last_name')
-    
-    def create(self, validated_data):
-        user = CustomUser.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', ''),
-        )
-        return user
+        model = Account
+        fields = ("id", "balance")
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-    
-    def validate(self, data):
-        user = authenticate(email=data['email'], password=data['password'])
-        if user is None:
-            raise serializers.ValidationError("Invalid email or password.")
-        return user
-
+class CoreUserSerializer(serializers.ModelSerializer):
+    account = AccountSerializer()
+    class Meta:
+        model = CoreUser
+        fields = ("id", "username", "email", "account")
