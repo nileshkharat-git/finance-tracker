@@ -1,59 +1,60 @@
 import React, { useState } from "react"
+import { Link } from "react-router-dom"
 import axios from "axios"
+import config from "../config"
+import { useAuth } from "../context/token"
 
+const Login = () => {
+  const {login} = useAuth() 
+  const [data, setData] = useState({
+    "username": "",
+    "password": ""
+  })
 
-const Login = ({setToken}) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLogin, setIsLogin] = useState(true)
-
-  const handleSignin = event => {
-    
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setData((prevDate) => ({
+      ...prevDate,
+      [name]: value
+    }))
   }
-
-  const handleLogin = event => {
+  const handleLogin = async event => {
     event.preventDefault();
     const options = {
-        method: 'POST',
-        url: 'http://127.0.0.1:8000/api/token/',
-        data: {email: email, password: password}
-      };
-      axios.request(options).then((response) => {
-        setToken(response.data['access'])
-      }).catch((error) => {
-        console.error(error);
-      });
-      setEmail("")
-      setPassword("")    
+      method: 'POST',
+      url: `${config.API_BASE_URL}/api/token/`,
+      data: data
+    };
+    await axios.request(options).then((response) => {
+      if(response.status === 200){
+        login(response.data["access"])
+      }
+      
+    }).catch((error) => {
+      console.error(error);
+    });
   }
   return (
-    <form className="w-1/4 shadow-lg px-2 py-8 mx-auto my-60" onSubmit={isLogin?handleLogin:handleSignin} >
-      <h2 className="text-4xl relative bottom-8 ml-4 bg-[#24344c] w-36 pl-2 pb-1 text-white font-medium shadow-lg">
-        {isLogin ? "Login" : "Sign Up"}
-      </h2>
-      <input
-        type="text"
-        value={email}
-        className="h-8 border-b-2 m-4 text-lg focus:outline-none"
-        placeholder="Email"
-        onChange={e => {
-          setEmail(e.target.value)
-        }}
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        className="h-8 border-b-2 m-4 text-lg focus:outline-none"
-        placeholder="Password"
-        onChange={(e)=>setPassword(e.target.value)}
-        required
-      />
-      <button 
-        className="block w-1/4 px-1 py-2 m-2 bg-green-600 text-white rounded text-xl active:shadow-md">
-        Submit
+    <form className="w-1/3 shadow-lg px-1 py-4 mx-auto my-40 border border-white h-80 max-[425px]:w-10/12" onSubmit={handleLogin} >
+      <h2 className="text-2xl mx-auto text-center px-2 text-white py-1">Welcome back</h2>
+      <section className="flex flex-col w-100 items-center justify-between h-2/4 mb-2">
+        <div className="flex flex-col w-8/12 max-[425px]:w-10/12">
+          <label htmlFor="username" className="ml-1">Username</label>
+          <input type="text" name="username" value={data["username"]} placeholder="Set username" onChange={handleChange}
+            className="rounded-md" />
+        </div>
+        <div className="flex flex-col w-8/12 max-[425px]:w-10/12">
+          <label htmlFor="password" className="ml-1">Password</label>
+          <input type="password" name="password" value={data["password"]} placeholder="********" onChange={handleChange}
+            className="rounded-md" />
+        </div>
+      </section>
+      <button
+        className="block w-1/4 px-1 py-2 mx-auto my-3 text-white border border-white rounded-md text-lg max-[425px]:w-10/12"
+        type="submit">
+        Login
       </button>
-      <a  onClick={() => setIsLogin(!isLogin)} className="text-sm text-center block">{isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}</a>
+      <Link className="text-sm text-center block hover:cursor-pointer" to="/signin">Don't have an account? Sign Up</Link>
     </form>
   )
 }
