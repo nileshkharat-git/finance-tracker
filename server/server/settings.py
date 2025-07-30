@@ -15,10 +15,12 @@ SECRET_KEY = "django-insecure-__sbcan@!^pb$@!kan9t7e1pd$22dl@@j)3urs$@geuodm!2=#
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-CORS_ORIGIN_ALLOW_ALL = True
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8080"
+]
+CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS
+CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -75,8 +77,8 @@ DATABASES = {
     "default":{
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "finance_tracker",
-        "USER":"nilesh",
-        "PASSWORD":"1234",
+        "USER":"postgres",
+        "PASSWORD":"Root@123",
         "HOST":"localhost"
     }
 }
