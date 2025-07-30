@@ -1,33 +1,23 @@
-import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Login from './components/Login';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Signin from './components/Signin';
+import { useAuth } from './context/token';
 
-
-const setToken = (userToken)=>{
-  sessionStorage.setItem("token", JSON.stringify(userToken))
-}
-
-const getToken = ()=>{
-  const tokenString = sessionStorage.getItem("token")
-  const userToken = JSON.parse(tokenString)
-  return userToken?.token
-}
 function App() {
-    const token = getToken()
-    if(!token){
-      return <>
-              <Navbar/>
-              <Login setToken={setToken}/>
-             </>
-    }
+  const {token} = useAuth()
+
   return (
-    <>
-      <Navbar/>
-      <Dashboard/>
-    </>
-  );
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={!token ? <Login /> : <Dashboard/>} />
+        <Route path='/signin' element={<Signin/>}/>
+      </Routes>
+    </Router>
+  )
 }
 
 export default App;
