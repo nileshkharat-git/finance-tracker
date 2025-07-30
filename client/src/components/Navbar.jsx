@@ -2,8 +2,8 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div className='bg-[#f4941c] py-2 h-[7vh]'>
-        <span className='text-5xl ml-8 text-white font-medium '>MoneyMap</span>
+    <div className='bg-[#471396] py-2 h-[10vh]'>
+        <span className='text-5xl ml-8 text-white font-medium'>MoneyMap</span>
     </div>
   )
 }
